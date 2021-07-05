@@ -1,0 +1,11 @@
+{
+  "watson": {
+    "discovery": {
+      "version": "2019-04-30",
+      "apikey": "hgiFIypQyJrMFA_PzerPvLls1KIgHIrbaH1qLAr7RdcA",
+      "serviceUrl": "https://api.jp-tok.discovery.watson.cloud.ibm.com",
+      "environmentId": "057e7d5d-b75e-4ddc-8de5-88aba66cbff2",
+      "collectionId": "be3fe3d0-9377-4704-a118-8f5905c820f0"
+    }
+  }
+}

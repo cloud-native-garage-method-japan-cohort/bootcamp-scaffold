@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-bootcamp-be
+  labels:
+    app: dev-bootcamp-be
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-bootcamp-be
+  template:
+    metadata:
+      labels:
+        app: dev-bootcamp-be
+    spec:
+      containers:
+        - name: dev-bootcamp-be
+          image: dev-bootcamp-be
+          ports:
+            - containerPort: 3000

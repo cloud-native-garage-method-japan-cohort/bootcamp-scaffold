@@ -1,0 +1,34 @@
+{
+  "name": "devbootcampbesamle01",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": "12.8.1"
+  },
+  "scripts": {
+    "start": "node ./bin/www",
+    "test": "mocha -t 10000 ./test/**/*.spec.js",
+    "lint": "esw ."
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.3.3",
+    "cookie-parser": "~1.4.5",
+    "cors": "^2.8.5",
+    "debug": "~4.3.1",
+    "express": "~4.17.1",
+    "http-errors": "~1.8.0",
+    "ibm-watson": "^6.0.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.10.0",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^7.18.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-watch": "^7.0.0",
+    "mocha": "^8.2.1",
+    "supertest": "^6.1.1"
+  }
+}
