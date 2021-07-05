@@ -6,7 +6,7 @@
     "node": "12.8.1"
   },
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "test": "mocha -t 10000 ./test/**/*.spec.js",
     "lint": "esw ."
   },
@@ -29,6 +29,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-watch": "^7.0.0",
     "mocha": "^8.2.1",
+    "nodemon": "^2.0.9",
     "supertest": "^6.1.1"
   }
 }

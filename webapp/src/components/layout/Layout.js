@@ -4,9 +4,9 @@ import Style from './Layout.module.css';
 
 const Layout = ({children}) => {
   return (
-    <div class={Style.wrapper}>
+    <div className={Style.wrapper}>
       <Header />
-      <div class={Style.main}>
+      <div className={Style.main}>
         {children}
       </div>
     </div>

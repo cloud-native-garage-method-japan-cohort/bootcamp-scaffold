@@ -40,25 +40,32 @@ const runQuery = async (categoryLabel, searchStr) => {
   const results = queryResponse.result.results;
   console.log(JSON.stringify(results, null, '\t'));
   if (queryResponse.result.results && queryResponse.result.results.length > 0) {
+
     return queryResponse.result.results[0].highlight.text[0]
         .replace(/<em>/g, '')
         .replace(/<\/em>/g, '');
+
+    // const textArray = queryResponse.result.results[0].highlight.text
+    // const filtered = textArray.map((text) => {
+    //   return text.replace(/<em>/g, '').replace(/<\/em>/g, '');
+    // });
+    // return filtered;
   } else {
     return '該当する情報が見つかりませんでした。';
   }
 };
 
 
-router.post('/message', async (req, res) => {
+router.post('/search', async (req, res) => {
   try {
-    if (!req.body.message) {
-      res.status(400).send('Missing message.');
+    if (!req.body.searchText) {
+      res.status(400).send('Missing search text.');
       return;
     }
 
     let responseText;
     // responseText = await runQuery('', req.body.messaage);
-    responseText = await runQuery('/health and fitness/disease', req.body.message);
+    responseText = await runQuery('/health and fitness/disease', req.body.searchText);
     res.json({
       responseText,
     });

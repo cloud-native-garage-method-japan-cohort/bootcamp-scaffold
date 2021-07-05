@@ -8,13 +8,12 @@ const app = require('../../app');
 let sessionId = null;
 
 
-describe('POST /discovery/message', () => {
+describe('POST /discovery/search', () => {
   it('should return output text', async () => {
     let res = await request(app)
-        .post('/discovery/message')
+        .post('/discovery/search')
         .send({
-          sessionId: sessionId,
-          message: 'コロナ',
+          searchText: 'コロナ',
         });
 
     res.status.should.equal(200);
