@@ -40,7 +40,6 @@ const runQuery = async (categoryLabel, searchStr) => {
   const results = queryResponse.result.results;
   console.log(JSON.stringify(results, null, '\t'));
   if (queryResponse.result.results && queryResponse.result.results.length > 0) {
-
     return queryResponse.result.results[0].highlight.text[0]
         .replace(/<em>/g, '')
         .replace(/<\/em>/g, '');
@@ -63,9 +62,7 @@ router.post('/search', async (req, res) => {
       return;
     }
 
-    let responseText;
-    // responseText = await runQuery('', req.body.messaage);
-    responseText = await runQuery('/health and fitness/disease', req.body.searchText);
+    const responseText = await runQuery('/health and fitness/disease', req.body.searchText);
     res.json({
       responseText,
     });
@@ -74,7 +71,5 @@ router.post('/search', async (req, res) => {
     res.status(500).send('Failed to call watson service');
   }
 });
-
-
 
 module.exports = router;

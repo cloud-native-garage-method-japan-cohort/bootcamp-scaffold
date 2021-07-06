@@ -2,9 +2,7 @@
 import React, {useState} from 'react';
 import Layout from '../components/layout/Layout';
 
-import { makeStyles, Grid, Divider, Container, IconButton} from "@material-ui/core";
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
+import { makeStyles, Grid, Container, IconButton, Paper, InputBase} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 
 import { queryDiscovery }from '../utils/index';
@@ -43,7 +41,8 @@ const Top = () => {
 
   const classes = useStyles();
 
-  const onPressQuery = async () => {
+  const onPressQuery = async (event) => {
+    event.preventDefault();
     const res = await queryDiscovery(sendText);
     setRecvText(res.data.responseText);
     console.log(res);
@@ -52,23 +51,24 @@ const Top = () => {
 
   return (
     <Layout>
-      <Paper component="form" className={classes.root}>
-        <InputBase
-          className={classes.input}
-          placeholder="Watson Discovery で検索"
-          inputProps={{ 'aria-label': 'search watson discovery' }}
-          onChange={(e)=>{setSendText(e.target.value)}}
-        />
-        <IconButton 
-          type="button"
-          className={classes.iconButton}
-          aria-label="search"
-          onClick={() => onPressQuery()}
-        >
-          <SearchIcon />
-        </IconButton>
-        <Divider/>
-      </Paper>
+      <form onSubmit={(e)=>{onPressQuery(e)}}>
+        <Paper className={classes.root}>
+          <InputBase
+            className={classes.input}
+            placeholder="Watson Discovery で検索"
+            inputProps={{ 'aria-label': 'search watson discovery' }}
+            onChange={(e)=>{setSendText(e.target.value)}}
+          />
+          <IconButton 
+            type="button"
+            className={classes.iconButton}
+            aria-label="search"
+            onClick={(e) => onPressQuery(e)}
+          >
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+      </form>
       <Grid className={classes.grid}>
         <Container>
           <Grid>
