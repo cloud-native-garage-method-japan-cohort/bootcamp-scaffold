@@ -1,0 +1,18 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: pisces-search-app-web-pipeline-triggertemplate
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: pisces-search-app-web-pipeline-run-
+      spec:
+        serviceAccountName: build-bot
+        pipelineRef:
+          name: pisces-search-app-web-pipeline
+        workspaces:
+          - name: pipeline-shared-data
+            persistentVolumeClaim:
+              claimName: pisces-pvc

@@ -1,0 +1,92 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  annotations:
+    app.openshift.io/runtime: nodejs
+  name: pisces-search-app-web-pipeline
+spec:
+  workspaces:
+    - name: pipeline-shared-data
+      description: |
+        This workspace stores the cloned repository and is available to all steps
+  params:
+    - name: image-repo
+      type: string
+      description: Docker image name
+      default: quay.io/yukihiro_azuma1_ibm/pisces-search-app-web
+  tasks:
+    - name: clone-repository
+      params:
+        - name: url
+          value: https://github.com/cloud-native-garage-method-japan-cohort/pisces-search-app-web.git
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: pipeline-shared-data
+    # - name: install-dependencies
+    #   runAfter:
+    #     - clone-repository
+    #   taskRef:
+    #     kind: Task
+    #     name: npm
+    #   workspaces:
+    #     - name: source
+    #       workspace: pipeline-shared-data
+    #   params:
+    #     - name: ARGS
+    #       value: 
+    #         - clean-install
+    # - name: run-tests
+    #   runAfter:
+    #     - install-dependencies
+    #   taskRef:
+    #     kind: Task
+    #     name: npm
+    #   workspaces:
+    #     - name: source
+    #       workspace: pipeline-shared-data
+    #   params:
+    #     - name: ARGS
+    #       value: 
+    #         - test
+    - name: build-image
+      runAfter:
+        - run-tests
+      taskRef:
+        kind: Task
+        name: buildah
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: IMAGE
+          value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
+    - name: kustomize-build
+      runAfter:
+        # - build-image
+        - clone-repository
+      taskRef:
+        kind: Task
+        name: kustomize-build
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: image-with-tag
+          value: "quay.io/yukihiro_azuma1_ibm/express-sample-app=$(params.image-repo):$(tasks.clone-repository.results.commit)"
+    - name: test-deploy
+      runAfter:
+        - kustomize-build
+      taskRef:
+        kind: Task
+        name: test-deploy
+      workspaces:
+        - name: source
+          workspace: pipeline-shared-data
+      params:
+        - name: app-namespace
+          value: yukihiro-azuma-pipeline-from-scratch
+        - name: app-name
+          value: pisces-search-app-web

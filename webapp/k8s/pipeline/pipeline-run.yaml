@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: pisces-search-app-web-pipeline-run-
+spec:
+  serviceAccountName: build-bot
+  pipelineRef:
+    name: pisces-search-app-web-pipeline
+  workspaces:
+    - name: pipeline-shared-data
+      persistentVolumeClaim:
+        claimName: pisces-pvc
+

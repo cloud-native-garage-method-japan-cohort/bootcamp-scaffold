@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Validate=false
+    openshift.io/host.generated: "true"
+  name: akpfs
+spec:
+  tls:
+    termination: edge
+  to:
+     kind: Service
+     name: pisces-search-app-web
+     weight: 100
+  wildcardPolicy: None

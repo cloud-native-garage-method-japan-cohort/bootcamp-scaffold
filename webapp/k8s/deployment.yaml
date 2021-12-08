@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    #app.openshift.io/vcs-ref: f7580aa1eb6f7176705176e201ecff4de93edafb
+    #app.openshift.io/vcs-uri: https://github.com/cloud-native-garage-method-japan-cohort/yukihiro-azuma-express-sample-app.git
+  labels:
+    app: pisces-search-app-web
+    app.kubernetes.io/instance: pisces-search-app-web
+    app.kubernetes.io/name: pisces-search-app-web
+    app.openshift.io/runtime: js
+  name: pisces-search-app-web
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: pisces-search-app-web
+      app.kubernetes.io/name: pisces-search-app-web
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: pisces-search-app-web
+        app.kubernetes.io/name: pisces-search-app-web
+    spec:
+      containers:
+        - env:
+          - name: INGRESS_HOST
+          - name: PROTOCOLS
+          - name: LOG_LEVEL
+            value: debug
+          image: quay.io/yukihiro_azuma1_ibm/pisces-search-app-web
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 3000
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: pisces-search-app-web
+          ports:
+            - containerPort: 3000
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
