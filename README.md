@@ -18,7 +18,7 @@
 
 ```
 %cd webapp
-%npm start
+%npm start NODE_OPTIONS='--openssl-legacy-provider'
 ```
 
 
