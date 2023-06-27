@@ -1,6 +1,6 @@
 const express = require('express');
 
-const DiscoveryV1 = require('ibm-watson/discovery/v1');
+const DiscoveryV2 = require('ibm-watson/discovery/v2');
 const {IamAuthenticator} = require('ibm-watson/auth');
 const config = require('config');
 
@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 // 接続情報
-const discovery = new DiscoveryV1({
+const discovery = new DiscoveryV2({
   version: config.get('watson.discovery.version'),
   authenticator: new IamAuthenticator({
     apikey: config.get('watson.discovery.apikey'),
@@ -17,34 +17,34 @@ const discovery = new DiscoveryV1({
   serviceUrl: config.get('watson.discovery.serviceUrl'),
 });
 
-const createQuery = (categoryLabel, searchStr) => {
+//const createQuery = (categoryLabel, searchStr) => {
+  const createQuery = (searchStr) => {
   const texts = searchStr.split(' ').map((item) => `text:"${item}"`).join(',');
-  return `enriched_text.categories.label::"${categoryLabel}",(${texts})`;
+  //return `enriched_text.categories.label::"${categoryLabel}",(${texts})`;
+  return `${texts}`;
 };
 
 const runQuery = async (categoryLabel, searchStr) => {
   const query = createQuery(categoryLabel, searchStr);
 
   const queryParams = {
-    environmentId: config.get('watson.discovery.environmentId'),
-    collectionId: config.get('watson.discovery.collectionId'),
-    highlight: true,
+    projectId: config.get('watson.discovery.projectId'),
     query,
-    _return: 'highlight',
+    highlight: true
   };
 
   console.log(`Running query - ${query}`);
   const queryResponse = await discovery.query(queryParams);
 
-  // let result = '';
   const results = queryResponse.result.results;
-  console.log(JSON.stringify(results, null, '\t'));
+  
+  console.log(JSON.stringify(results, null, 2));
   if (queryResponse.result.results && queryResponse.result.results.length > 0) {
-    return queryResponse.result.results[0].highlight.text[0]
+    return queryResponse.result.results[0].extracted_metadata.filename
         .replace(/<em>/g, '')
         .replace(/<\/em>/g, '');
 
-    // const textArray = queryResponse.result.results[0].highlight.text
+    // const textArray = queryResponse.result.results[0].text
     // const filtered = textArray.map((text) => {
     //   return text.replace(/<em>/g, '').replace(/<\/em>/g, '');
     // });
@@ -62,7 +62,8 @@ router.post('/search', async (req, res) => {
       return;
     }
 
-    const responseText = await runQuery('/health and fitness/disease', req.body.searchText);
+    //const responseText = await runQuery('/health and fitness/disease', req.body.searchText);
+    const responseText = await runQuery(req.body.searchText);
     res.json({
       responseText,
     });
