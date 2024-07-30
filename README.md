@@ -10,17 +10,16 @@
 
 使い方
 
-```
-%cd api
-%npm install
-%npm start
-```
-
-```
-%cd webapp
-%npm start NODE_OPTIONS='--openssl-legacy-provider'
+```sh
+% cd api
+% npm install
+% npm run dev
 ```
 
+```sh
+% cd webapp
+% npm start
+```
 
 ## License
 
