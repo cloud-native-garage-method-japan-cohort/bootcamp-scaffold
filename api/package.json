@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": "12.8.1"
+    "node": "20.15.1"
   },
   "scripts": {
     "start": "nodemon ./bin/www",

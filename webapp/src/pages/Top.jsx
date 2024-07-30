@@ -5,7 +5,7 @@ import Layout from '../components/layout/Layout';
 import { makeStyles, Grid, Container, IconButton, Paper, InputBase} from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
 
-import { queryDiscovery }from '../utils/index';
+import { queryDiscovery } from '../utils/index';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,7 +59,7 @@ const Top = () => {
             inputProps={{ 'aria-label': 'search watson discovery' }}
             onChange={(e)=>{setSendText(e.target.value)}}
           />
-          <IconButton 
+          <IconButton
             type="button"
             className={classes.iconButton}
             aria-label="search"
